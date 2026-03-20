@@ -1,12 +1,10 @@
-## 👋 Hi there
-
-### 🚀 Docker Assignment Project
+### Docker Assignment Project
 
 This project is a machine learning web application for predicting BMW global sales using Flask and Docker.
 
 ---
 
-## 🐳 How to Run
+## How to Run
 
 ```bash
 docker build -t bmw-app .
@@ -17,7 +15,7 @@ Open: http://localhost:5000
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 .
@@ -35,8 +33,8 @@ Open: http://localhost:5000
 
 ---
 
-## 👤 Author
+## Author
 
 * Natthanon Narongsaksakul, st126113  & Waranon Neamtuptim, st125934
-* https://github.com/
+* https://github.com/st126113-hash
 * https://github.com/Waranon021
