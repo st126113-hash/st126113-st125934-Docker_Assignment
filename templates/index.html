@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW Sales Prediction</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .container {
+            width: 100%;
+            max-width: 960px;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+        }
+        .hero {
+            padding: 32px 32px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+        }
+        .hero p {
+            margin: 0;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+            padding: 28px 32px 32px;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .panel h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        label {
+            display: block;
+            margin: 14px 0 8px;
+            font-weight: 600;
+        }
+        input, select, button {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 14px;
+            font-size: 1rem;
+        }
+        input, select {
+            background: rgba(255, 255, 255, 0.06);
+            color: #f8fafc;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        select {
+            background-image: linear-gradient(45deg, transparent 50%, #f8fafc 50%), linear-gradient(135deg, #f8fafc 50%, transparent 50%);
+            background-position: calc(100% - 22px) calc(50% - 3px), calc(100% - 16px) calc(50% - 3px);
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+            padding-right: 40px;
+        }
+        select option {
+            color: #111827;
+            background: #ffffff;
+        }
+        select:invalid {
+            color: #94a3b8;
+        }
+        button {
+            margin-top: 18px;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover { transform: translateY(-1px); }
+        .result-box {
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+        .pill {
+            display: inline-block;
+            width: fit-content;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .high { background: rgba(34, 197, 94, 0.18); color: #86efac; }
+        .low { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+        .muted { color: #cbd5e1; }
+        .summary {
+            line-height: 1.8;
+            color: #f8fafc;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fecaca;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.22);
+        }
+        @media (max-width: 860px) {
+            .content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>BMW Sales Prediction Dashboard</h1>
+            <p>Choose a BMW model, year, and region to predict whether the sales level is likely to be high or low.</p>
+        </div>
+
+        <div class="content">
+            <div class="panel">
+                <h2>Prediction Input</h2>
+
+                <label for="Model">BMW Model</label>
+                <select id="Model" required>
+                    <option value="" disabled selected>Select model</option>
+                    {% for model in model_options %}
+                    <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="Year">Year</label>
+                <select id="Year" required>
+                    <option value="" disabled selected>Select year</option>
+                    {% for year in range(2018, 2026) %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="Region">Region</label>
+                <select id="Region" required>
+                    <option value="" disabled selected>Select region</option>
+                    {% for region in region_options %}
+                    <option value="{{ region }}">{{ region }}</option>
+                    {% endfor %}
+                </select>
+
+                <button onclick="sendData()">Predict Sales Level</button>
+            </div>
+
+            <div class="panel result-box">
+                <h2>Prediction Result</h2>
+                <div id="result">
+                    <p class="muted">Your result will appear here with full text summary.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function sendData() {
+            const resultBox = document.getElementById('result');
+
+            const data = {
+                Model: document.getElementById('Model').value,
+                Year: document.getElementById('Year').value,
+                Region: document.getElementById('Region').value
+            };
+
+            if (!data.Model || !data.Year || !data.Region) {
+                resultBox.innerHTML = '<div class="error">Please choose Model, Year, and Region first.</div>';
+                return;
+            }
+
+            resultBox.innerHTML = '<p class="muted">Generating prediction...</p>';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    resultBox.innerHTML = `<div class="error">${result.error}</div>`;
+                    return;
+                }
+
+                const badgeClass = result.label === 'High Sales' ? 'pill high' : 'pill low';
+
+                resultBox.innerHTML = `
+                    <span class="${badgeClass}">${result.label}</span>
+                    <div class="summary">
+                        <strong>Model:</strong> ${result.model}<br>
+                        <strong>Year:</strong> ${result.year}<br>
+                        <strong>Region:</strong> ${result.region}<br><br>
+                        <strong>Prediction Text:</strong><br>
+                        ${result.message}
+                    </div>
+                `;
+            } catch (error) {
+                resultBox.innerHTML = `<div class="error">Request failed: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
