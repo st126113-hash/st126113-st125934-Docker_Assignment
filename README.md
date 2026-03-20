@@ -37,5 +37,6 @@ Open: http://localhost:5000
 
 ## 👤 Author
 
-* Natthanon
-* https://github.com/st126113-hash
+* Natthanon Narongsaksakul, st126113  & Waranon Neamtuptim, st125934
+* https://github.com/
+* https://github.com/Waranon021
