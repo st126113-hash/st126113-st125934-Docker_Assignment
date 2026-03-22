@@ -11,7 +11,7 @@ The prediction result is classified into two categories:
 
 ---
 
-Features
+### Features
 
 Web-based user interface built with Flask
 Machine learning model for sales level prediction
@@ -20,7 +20,7 @@ Simple and intuitive user interaction
 
 ---
 
-Machine Learning Overview
+### Machine Learning Overview
 The prediction model was trained using historical BMW global sales data (2018–2025).
 Relevant features such as vehicle model, year, and sales region are used as input to predict the expected sales level.
 
@@ -37,7 +37,7 @@ Open: http://localhost:5000
 
 ---
 
-How to Use the Website
+### How to Use the Website
 
 1.Select a BMW Model from the dropdown list
 2.Select a Year
@@ -66,7 +66,7 @@ How to Use the Website
 ```
 
 
-**File Descriptions
+### File Descriptions
 app.py
 Main Flask backend application.
 
