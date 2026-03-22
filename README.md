@@ -40,9 +40,13 @@ Open: http://localhost:5000
 ### How to Use the Website
 
 1.Select a BMW Model from the dropdown list
+
 2.Select a Year
+
 3.Select a Region
+
 4.Click the Predict button
+
 5.The prediction result (High Sales / Low Sales) will be displayed on the right side of the page
 
 ---
