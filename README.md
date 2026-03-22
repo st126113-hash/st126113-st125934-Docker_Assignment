@@ -6,6 +6,7 @@ The system predicts BMW global sales performance based on the selected BMW model
 The prediction result is classified into two categories:
 
 -High Sales
+
 -Low Sales
 
 ---
